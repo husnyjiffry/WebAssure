@@ -24,7 +24,7 @@ A beginner-friendly, scalable Selenium/TestNG UI automation framework for demoqa
 
 1. **Clone the repository:**
    ```sh
-   git clone <your-repo-url>
+   git clone https://github.com/husnyjiffry/WebAssure
    cd WebAssure
    ```
 
@@ -183,4 +183,8 @@ WebAssure/
 
 ## License
 
-MIT (or your chosen license)
+This project is licensed under the MIT License.
+
+You are free to use this framework for any purpose, including commercial and non-commercial projects, as long as you retain the copyright notice.
+
+See the [LICENSE](LICENSE) file for details.
