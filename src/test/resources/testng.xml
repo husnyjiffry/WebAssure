@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<!--
+    Beginner Tip:
+    The 'parallel="methods"' attribute tells TestNG to run test methods in parallel.
+    The 'thread-count="4"' attribute sets the maximum number of test methods that can run at the same time.
+    This makes your tests run faster by using multiple browser sessions in parallel.
+    You can change the thread-count to control how many tests run at once.
+-->
+<suite name="DefaultSuite" parallel="methods" thread-count="4">
+    <test name="ComponentTests">
+        <classes>
+            <class name="gui.automation.component.LandingPageComponentTest"/>
+            <class name="gui.automation.component.ElementsPageComponentTest"/>
+            <class name="gui.automation.component.TextBoxComponentTest"/>
+        </classes>
+    </test>
+</suite>
