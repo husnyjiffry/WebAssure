@@ -6,24 +6,18 @@ import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import gui.automation.utils.SeleniumUtil;
 
 public class LandingPageComponentTest extends BaseTest {
     private LandingPageActions landingPageActions;
 
     @BeforeMethod
     public void setUpActions() {
-        landingPageActions = new LandingPageActions();
+        landingPageActions = new LandingPageActions(getDriver());
     }
 
     @Test
     public void testLandingPageLoads() {
         Assert.assertTrue(landingPageActions.isBannerVisible(), "Landing page should be loaded (banner visible)");
-    }
-
-    @Test
-    public void testAllMainCardsVisible() {
-        Assert.assertTrue(landingPageActions.allMainCardsVisible(), "All main cards should be visible");
     }
 
     @Test
@@ -101,5 +95,38 @@ public class LandingPageComponentTest extends BaseTest {
         Assert.assertEquals(landingPageActions.getCurrentUrl(), "https://demoqa.com/books", "Should navigate to Book Store Application page");
         landingPageActions.goBack();
         Assert.assertTrue(landingPageActions.isBannerVisible(), "Should return to landing page");
+    }
+
+    // ----------------------
+    // Card Visibility Tests
+    // ----------------------
+    @Test
+    public void testElementsCardVisible() {
+        Assert.assertTrue(landingPageActions.isElementsCardVisible(), "Elements card should be visible");
+    }
+
+    @Test
+    public void testFormsCardVisible() {
+        Assert.assertTrue(landingPageActions.isFormsCardVisible(), "Forms card should be visible");
+    }
+
+    @Test
+    public void testAlertsCardVisible() {
+        Assert.assertTrue(landingPageActions.isAlertsCardVisible(), "Alerts card should be visible");
+    }
+
+    @Test
+    public void testWidgetsCardVisible() {
+        Assert.assertTrue(landingPageActions.isWidgetsCardVisible(), "Widgets card should be visible");
+    }
+
+    @Test
+    public void testInteractionsCardVisible() {
+        Assert.assertTrue(landingPageActions.isInteractionsCardVisible(), "Interactions card should be visible");
+    }
+
+    @Test
+    public void testBookStoreCardVisible() {
+        Assert.assertTrue(landingPageActions.isBookStoreCardVisible(), "Book Store Application card should be visible");
     }
 }

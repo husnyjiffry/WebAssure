@@ -42,4 +42,8 @@ public abstract class BaseTest {
             }
         }
     }
+
+    protected WebDriver getDriver() {
+        return gui.automation.utils.SeleniumUtil.getDriver();
+    }
 }

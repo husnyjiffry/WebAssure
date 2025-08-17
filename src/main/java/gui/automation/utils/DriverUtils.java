@@ -12,6 +12,7 @@ import gui.automation.utils.ConfigUtils;
 
 import java.nio.file.Paths;
 import java.nio.file.Files;
+import java.time.Duration;
 
 public class DriverUtils {
     private static final Logger logger = LoggerFactory.getLogger(DriverUtils.class);
@@ -83,7 +84,16 @@ public class DriverUtils {
             options.addArguments("--disable-features=VizDisplayCompositor");
             // Removed non-standard flags: --disable-images, --disable-javascript
 
+            String headless = ConfigUtils.get("headless");
+            if (headless != null && headless.equalsIgnoreCase("true")) {
+                options.addArguments("--headless=new"); // For Chrome 109+; use --headless for older
+                logger.info("Running in headless mode");
+            } else {
+                logger.info("Running in headed (UI) mode");
+            }
+
             WebDriver driver = new ChromeDriver(options);
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
             driver.manage().window().maximize();
             driver.get(url);
             logger.info("Successfully created Chrome driver and navigated to: {}", url);

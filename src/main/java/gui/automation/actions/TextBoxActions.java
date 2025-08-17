@@ -3,85 +3,49 @@ package gui.automation.actions;
 import gui.automation.pages.TextBoxPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.openqa.selenium.WebDriver;
 
 public class TextBoxActions extends BaseActions {
     private static final Logger logger = LoggerFactory.getLogger(TextBoxActions.class);
-    private final TextBoxPage textBoxPage = new TextBoxPage();
+    private final TextBoxPage textBoxPage;
 
-    // Page title
-    public boolean isPageTitleVisible() {
-        return textBoxPage.isPageTitleVisible();
-    }
-    public String getPageTitleText() {
-        return textBoxPage.getPageTitleText();
+    public TextBoxActions(WebDriver driver) {
+        super(driver);
+        this.textBoxPage = new TextBoxPage(driver);
     }
 
-    // Full Name
-    public boolean isFullNameLabelVisible() {
-        return textBoxPage.isFullNameLabelVisible();
+    // ----------------------
+    // Navigation Methods
+    // ----------------------
+    // (Inherit navigation methods from BaseActions)
+
+    // ----------------------
+    // Input Methods
+    // ----------------------
+    public void enterFullName(String name) {
+        logger.info("Entering Full Name: {}", name);
+        textBoxPage.setFullName(name);
     }
-    public String getFullNameLabelText() {
-        return textBoxPage.getFullNameLabelText();
+    public void enterEmail(String email) {
+        logger.info("Entering Email: {}", email);
+        textBoxPage.setEmail(email);
     }
-    public boolean isFullNameFieldVisible() {
-        return textBoxPage.isFullNameVisible();
+    public void enterCurrentAddress(String address) {
+        logger.info("Entering Current Address: {}", address);
+        textBoxPage.setCurrentAddress(address);
     }
-    public String getFullNamePlaceholder() {
-        return textBoxPage.getFullNamePlaceholder();
+    public void enterPermanentAddress(String address) {
+        logger.info("Entering Permanent Address: {}", address);
+        textBoxPage.setPermanentAddress(address);
     }
 
-    // Email
-    public boolean isEmailLabelVisible() {
-        return textBoxPage.isEmailLabelVisible();
-    }
-    public String getEmailLabelText() {
-        return textBoxPage.getEmailLabelText();
-    }
-    public boolean isEmailFieldVisible() {
-        return textBoxPage.isEmailVisible();
-    }
-    public String getEmailPlaceholder() {
-        return textBoxPage.getEmailPlaceholder();
-    }
-
-    // Current Address
-    public boolean isCurrentAddressLabelVisible() {
-        return textBoxPage.isCurrentAddressLabelVisible();
-    }
-    public String getCurrentAddressLabelText() {
-        return textBoxPage.getCurrentAddressLabelText();
-    }
-    public boolean isCurrentAddressFieldVisible() {
-        return textBoxPage.isCurrentAddressVisible();
-    }
-    public String getCurrentAddressPlaceholder() {
-        return textBoxPage.getCurrentAddressPlaceholder();
-    }
-
-    // Permanent Address
-    public boolean isPermanentAddressLabelVisible() {
-        return textBoxPage.isPermanentAddressLabelVisible();
-    }
-    public String getPermanentAddressLabelText() {
-        return textBoxPage.getPermanentAddressLabelText();
-    }
-    public boolean isPermanentAddressFieldVisible() {
-        return textBoxPage.isPermanentAddressVisible();
-    }
-    public String getPermanentAddressPlaceholder() {
-        return textBoxPage.getPermanentAddressPlaceholder();
-    }
-
-    // Submit Button
-    public boolean isSubmitButtonVisible() {
-        return textBoxPage.isSubmitButtonVisible();
-    }
+    // ----------------------
+    // Action/Click Methods
+    // ----------------------
     public void clickSubmit() {
         logger.info("Clicking Submit button");
         textBoxPage.clickSubmit();
     }
-
-    // Fill the form and submit
     public void fillForm(String name, String email, String currentAddress, String permanentAddress) {
         logger.info("Filling form with: Name={}, Email={}, CurrentAddress={}, PermanentAddress={}", name, email, currentAddress, permanentAddress);
         enterFullName(name);
@@ -91,7 +55,9 @@ public class TextBoxActions extends BaseActions {
         clickSubmit();
     }
 
-    // Output getters after submit (renamed for clarity)
+    // ----------------------
+    // Output Retrieval Methods
+    // ----------------------
     public String getSubmittedNameOutput() {
         String value = textBoxPage.getSubmittedNameOutput();
         logger.info("Output Name after submit: {}", value);
@@ -113,47 +79,31 @@ public class TextBoxActions extends BaseActions {
         return value;
     }
 
-    // Methods to check if fields and output are empty
-    public boolean isFullNameEmpty() {
-        return textBoxPage.isFullNameEmpty();
-    }
-    public boolean isEmailEmpty() {
-        return textBoxPage.isEmailEmpty();
-    }
-    public boolean isCurrentAddressEmpty() {
-        return textBoxPage.isCurrentAddressEmpty();
-    }
-    public boolean isPermanentAddressEmpty() {
-        return textBoxPage.isPermanentAddressEmpty();
-    }
-    public boolean isOutputEmpty() {
-        return textBoxPage.isOutputEmpty();
-    }
-
-    // No need for refreshPage() here; inherited from BaseActions
-
-    // Data entry
-    public void enterFullName(String name) {
-        logger.info("Entering Full Name: {}", name);
-        textBoxPage.setFullName(name);
-    }
-    public void enterEmail(String email) {
-        logger.info("Entering Email: {}", email);
-        textBoxPage.setEmail(email);
-    }
-    public void enterCurrentAddress(String address) {
-        logger.info("Entering Current Address: {}", address);
-        textBoxPage.setCurrentAddress(address);
-    }
-    public void enterPermanentAddress(String address) {
-        logger.info("Entering Permanent Address: {}", address);
-        textBoxPage.setPermanentAddress(address);
-    }
-
-    // Navigation
-    @Override
-    public void navigateTo(String url) {
-        logger.info("Navigating to: {}", url);
-        super.navigateTo(url);
-    }
+    // ----------------------
+    // Visibility, Label, Placeholder, and Empty Check Methods
+    // ----------------------
+    public boolean isPageTitleVisible() { return textBoxPage.isPageTitleVisible(); }
+    public String getPageTitleText() { return textBoxPage.getPageTitleText(); }
+    public boolean isFullNameLabelVisible() { return textBoxPage.isFullNameLabelVisible(); }
+    public String getFullNameLabelText() { return textBoxPage.getFullNameLabelText(); }
+    public boolean isFullNameFieldVisible() { return textBoxPage.isFullNameVisible(); }
+    public String getFullNamePlaceholder() { return textBoxPage.getFullNamePlaceholder(); }
+    public boolean isEmailLabelVisible() { return textBoxPage.isEmailLabelVisible(); }
+    public String getEmailLabelText() { return textBoxPage.getEmailLabelText(); }
+    public boolean isEmailFieldVisible() { return textBoxPage.isEmailVisible(); }
+    public String getEmailPlaceholder() { return textBoxPage.getEmailPlaceholder(); }
+    public boolean isCurrentAddressLabelVisible() { return textBoxPage.isCurrentAddressLabelVisible(); }
+    public String getCurrentAddressLabelText() { return textBoxPage.getCurrentAddressLabelText(); }
+    public boolean isCurrentAddressFieldVisible() { return textBoxPage.isCurrentAddressVisible(); }
+    public String getCurrentAddressPlaceholder() { return textBoxPage.getCurrentAddressPlaceholder(); }
+    public boolean isPermanentAddressLabelVisible() { return textBoxPage.isPermanentAddressLabelVisible(); }
+    public String getPermanentAddressLabelText() { return textBoxPage.getPermanentAddressLabelText(); }
+    public boolean isPermanentAddressFieldVisible() { return textBoxPage.isPermanentAddressVisible(); }
+    public String getPermanentAddressPlaceholder() { return textBoxPage.getPermanentAddressPlaceholder(); }
+    public boolean isSubmitButtonVisible() { return textBoxPage.isSubmitButtonVisible(); }
+    public boolean isFullNameEmpty() { return textBoxPage.isFullNameEmpty(); }
+    public boolean isEmailEmpty() { return textBoxPage.isEmailEmpty(); }
+    public boolean isCurrentAddressEmpty() { return textBoxPage.isCurrentAddressEmpty(); }
+    public boolean isPermanentAddressEmpty() { return textBoxPage.isPermanentAddressEmpty(); }
+    public boolean isOutputEmpty() { return textBoxPage.isOutputEmpty(); }
 }

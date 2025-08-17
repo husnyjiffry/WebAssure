@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import gui.automation.utils.SeleniumUtil;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
 
 public class TextBoxPage extends BasePage {
     private final By pageTitle = By.xpath("//h1[contains(@class,'text-center') and text()='Text Box']");
@@ -25,102 +26,88 @@ public class TextBoxPage extends BasePage {
     private final By outputCurrentAddress = By.xpath("//p[@id='currentAddress']");
     private final By outputPermanentAddress = By.xpath("//p[@id='permanentAddress']");
 
-    // Page title
+    // ----------------------
+    // Visibility Check Methods
+    // ----------------------
     public boolean isPageTitleVisible() {
         return SeleniumUtil.waitForVisible(pageTitle) != null;
     }
-    public String getPageTitleText() {
-        return SeleniumUtil.getText(pageTitle);
-    }
 
-    // Full Name
     public boolean isFullNameLabelVisible() {
         return SeleniumUtil.waitForVisible(fullNameLabel) != null;
     }
-    public String getFullNameLabelText() {
-        return SeleniumUtil.getText(fullNameLabel);
-    }
+
     public boolean isFullNameVisible() {
         return SeleniumUtil.waitForVisible(fullNameInput) != null;
     }
-    public String getFullNamePlaceholder() {
-        return SeleniumUtil.getAttribute(fullNameInput, "placeholder");
+
+    public boolean isEmailLabelVisible() {
+        return SeleniumUtil.waitForVisible(emailLabel) != null;
     }
+
+    public boolean isEmailVisible() {
+        return SeleniumUtil.waitForVisible(emailInput) != null;
+    }
+
+    public boolean isCurrentAddressLabelVisible() {
+        return SeleniumUtil.waitForVisible(currentAddressLabel) != null;
+    }
+
+    public boolean isCurrentAddressVisible() {
+        return SeleniumUtil.waitForVisible(currentAddressInput) != null;
+    }
+
+    public boolean isPermanentAddressLabelVisible() {
+        return SeleniumUtil.waitForVisible(permanentAddressLabel) != null;
+    }
+
+    public boolean isPermanentAddressVisible() {
+        return SeleniumUtil.waitForVisible(permanentAddressInput) != null;
+    }
+
+    public boolean isSubmitButtonVisible() {
+        return SeleniumUtil.waitForVisible(submitButton) != null;
+    }
+
+    public TextBoxPage(WebDriver driver) {
+        super(driver);
+    }
+
+    // ----------------------
+    // Input Methods
+    // ----------------------
     public void setFullName(String name) {
         SeleniumUtil.type(fullNameInput, name);
     }
 
-    // Email
-    public boolean isEmailLabelVisible() {
-        return SeleniumUtil.waitForVisible(emailLabel) != null;
-    }
-    public String getEmailLabelText() {
-        return SeleniumUtil.getText(emailLabel);
-    }
-    public boolean isEmailVisible() {
-        return SeleniumUtil.waitForVisible(emailInput) != null;
-    }
-    public String getEmailPlaceholder() {
-        return SeleniumUtil.getAttribute(emailInput, "placeholder");
-    }
     public void setEmail(String email) {
         SeleniumUtil.type(emailInput, email);
     }
 
-    // Current Address
-    public boolean isCurrentAddressLabelVisible() {
-        return SeleniumUtil.waitForVisible(currentAddressLabel) != null;
-    }
-    public String getCurrentAddressLabelText() {
-        return SeleniumUtil.getText(currentAddressLabel);
-    }
-    public boolean isCurrentAddressVisible() {
-        return SeleniumUtil.waitForVisible(currentAddressInput) != null;
-    }
-    public String getCurrentAddressPlaceholder() {
-        return SeleniumUtil.getAttribute(currentAddressInput, "placeholder");
-    }
     public void setCurrentAddress(String address) {
         SeleniumUtil.type(currentAddressInput, address);
     }
 
-    // Permanent Address (using robust XPath)
-    public boolean isPermanentAddressLabelVisible() {
-        return SeleniumUtil.waitForVisible(permanentAddressLabel) != null;
-    }
-    public String getPermanentAddressLabelText() {
-        return SeleniumUtil.getText(permanentAddressLabel);
-    }
-    public boolean isPermanentAddressVisible() {
-        return SeleniumUtil.waitForVisible(permanentAddressInput) != null;
-    }
-    public String getPermanentAddressPlaceholder() {
-        return SeleniumUtil.getAttribute(permanentAddressInput, "placeholder");
-    }
     public void setPermanentAddress(String address) {
         SeleniumUtil.type(permanentAddressInput, address);
     }
 
-    // Submit
-    public boolean isSubmitButtonVisible() {
-        return SeleniumUtil.waitForVisible(submitButton) != null;
-    }
+    // ----------------------
+    // Click Methods
+    // ----------------------
     public void clickSubmit() {
         try {
             SeleniumUtil.click(submitButton);
         } catch (ElementClickInterceptedException e1) {
-            // Try scrolling into view and retry
             SeleniumUtil.scrollTo(submitButton);
             try {
                 SeleniumUtil.click(submitButton);
             } catch (ElementClickInterceptedException e2) {
-                // Try to close known popups/ads and retry
                 SeleniumUtil.closeKnownPopups();
                 try {
                     SeleniumUtil.waitSeconds(1);
                     SeleniumUtil.click(submitButton);
                 } catch (ElementClickInterceptedException e3) {
-                    // Fallback: try JavaScript click
                     JavascriptExecutor js = (JavascriptExecutor) SeleniumUtil.getDriver();
                     js.executeScript("arguments[0].click();", SeleniumUtil.waitForVisible(submitButton));
                 }
@@ -128,38 +115,85 @@ public class TextBoxPage extends BasePage {
         }
     }
 
-    // Output getters (renamed for clarity)
+    // ----------------------
+    // Output Retrieval Methods
+    // ----------------------
     public String getSubmittedNameOutput() {
         return SeleniumUtil.getText(outputName);
     }
+
     public String getSubmittedEmailOutput() {
         return SeleniumUtil.getText(outputEmail);
     }
+
     public String getSubmittedCurrentAddressOutput() {
         return SeleniumUtil.getText(outputCurrentAddress);
     }
+
     public String getSubmittedPermanentAddressOutput() {
         return SeleniumUtil.getText(outputPermanentAddress);
     }
 
-    // Methods to check if fields are empty
+    // ----------------------
+    // Utility Methods
+    // ----------------------
+    public String getPageTitleText() {
+        return SeleniumUtil.getText(pageTitle);
+    }
+
+    public String getFullNameLabelText() {
+        return SeleniumUtil.getText(fullNameLabel);
+    }
+
+    public String getFullNamePlaceholder() {
+        return SeleniumUtil.getAttribute(fullNameInput, "placeholder");
+    }
+
+    public String getEmailLabelText() {
+        return SeleniumUtil.getText(emailLabel);
+    }
+
+    public String getEmailPlaceholder() {
+        return SeleniumUtil.getAttribute(emailInput, "placeholder");
+    }
+
+    public String getCurrentAddressLabelText() {
+        return SeleniumUtil.getText(currentAddressLabel);
+    }
+
+    public String getCurrentAddressPlaceholder() {
+        return SeleniumUtil.getAttribute(currentAddressInput, "placeholder");
+    }
+
+    public String getPermanentAddressLabelText() {
+        return SeleniumUtil.getText(permanentAddressLabel);
+    }
+
+    public String getPermanentAddressPlaceholder() {
+        return SeleniumUtil.getAttribute(permanentAddressInput, "placeholder");
+    }
+
     public boolean isFullNameEmpty() {
         return SeleniumUtil.getAttribute(fullNameInput, "value").isEmpty();
     }
+
     public boolean isEmailEmpty() {
         return SeleniumUtil.getAttribute(emailInput, "value").isEmpty();
     }
+
     public boolean isCurrentAddressEmpty() {
         return SeleniumUtil.getAttribute(currentAddressInput, "value").isEmpty();
     }
+
     public boolean isPermanentAddressEmpty() {
         return SeleniumUtil.getAttribute(permanentAddressInput, "value").isEmpty();
     }
+
     public boolean isOutputEmpty() {
-        // Output is empty if the outputName, outputEmail, outputCurrentAddress, and outputPermanentAddress are all empty or not displayed
-        return SeleniumUtil.getText(outputName).isEmpty() &&
-               SeleniumUtil.getText(outputEmail).isEmpty() &&
-               SeleniumUtil.getText(outputCurrentAddress).isEmpty() &&
-               SeleniumUtil.getText(outputPermanentAddress).isEmpty();
+        boolean nameMissingOrEmpty = SeleniumUtil.find(outputName) == null || SeleniumUtil.getText(outputName).isEmpty();
+        boolean emailMissingOrEmpty = SeleniumUtil.find(outputEmail) == null || SeleniumUtil.getText(outputEmail).isEmpty();
+        boolean currentAddressMissingOrEmpty = SeleniumUtil.find(outputCurrentAddress) == null || SeleniumUtil.getText(outputCurrentAddress).isEmpty();
+        boolean permanentAddressMissingOrEmpty = SeleniumUtil.find(outputPermanentAddress) == null || SeleniumUtil.getText(outputPermanentAddress).isEmpty();
+        return nameMissingOrEmpty && emailMissingOrEmpty && currentAddressMissingOrEmpty && permanentAddressMissingOrEmpty;
     }
 }

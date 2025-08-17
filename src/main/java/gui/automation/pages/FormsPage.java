@@ -1,15 +1,14 @@
 package gui.automation.pages;
 
-import org.openqa.selenium.By;
-import gui.automation.utils.SeleniumUtil;
+// This class is currently a placeholder for future Forms page methods.
+// Add visibility checks, input, click, and utility methods here as needed.
 
-/**
- * Page Object for the Forms section of demoqa.com.
- */
-public class FormsPage {
-    private final By practiceFormMenu = By.id("item-0");
+import org.openqa.selenium.WebDriver;
 
-    public void goToPracticeForm() {
-        SeleniumUtil.click(practiceFormMenu);
+public class FormsPage extends BasePage {
+    public FormsPage(WebDriver driver) {
+        super(driver);
     }
+
+    // TODO: Implement Forms page methods
 }
