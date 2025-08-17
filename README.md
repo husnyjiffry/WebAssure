@@ -336,6 +336,15 @@ This framework is designed to automate a wide variety of web UI scenarios, from 
 - **Screenshots on Failure:**
   - Screenshots are saved to the directory specified in `config.properties` (e.g., `
 
+## Contact & Support
+
+- Maintainer: **Husny Jeffrey**
+- Website: [https://husnyjeffrey.com/](https://husnyjeffrey.com/)
+- Email: [husnyjeffrey@gmail.com](mailto:husnyjeffrey@gmail.com)
+- Raise issues or feature requests on [GitHub Issues](https://github.com/husnyjiffry/WebAssure/issues)
+
+---
+
 ## Changelog
 
 - 2025-08-17: Initial public release.
