@@ -1,6 +1,7 @@
 package gui.automation.actions;
 
 import gui.automation.pages.BasePage;
+import org.openqa.selenium.WebDriver;
 
 /**
  * Beginner Tip:
@@ -18,4 +19,8 @@ import gui.automation.pages.BasePage;
  */
 public class BaseActions extends BasePage {
     // Inherit browser-level actions from BasePage
+
+    public BaseActions(WebDriver driver) {
+        super(driver);
+    }
 }

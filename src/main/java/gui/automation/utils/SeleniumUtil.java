@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility class for Selenium WebDriver actions.
@@ -76,7 +76,19 @@ public class SeleniumUtil {
     }
 
     /**
-     * Waits for an element to be visible.
+     * Waits for a web element to become visible on the page within the default timeout.
+     *
+     * This method is useful when you expect an element to appear after some delay (e.g., after navigation or an AJAX call).
+     * It will repeatedly check for the element's visibility until the timeout is reached.
+     *
+     * @param by The locator (By) of the element to wait for.
+     * @return The visible WebElement if found within the timeout, or null if the element is not visible in time.
+     *
+     * Example usage:
+     *   WebElement button = SeleniumUtil.waitForVisible(By.id("submit"));
+     *   if (button != null) {
+     *       button.click();
+     *   }
      */
     public static WebElement waitForVisible(By by) {
         try {
@@ -313,5 +325,93 @@ public class SeleniumUtil {
     public static void waitForUrlDoesNotContain(String fragment, int timeoutSeconds) {
         org.openqa.selenium.support.ui.WebDriverWait wait = new org.openqa.selenium.support.ui.WebDriverWait(getDriver(), java.time.Duration.ofSeconds(timeoutSeconds));
         wait.until(driver -> !driver.getCurrentUrl().contains(fragment));
+    }
+
+    /**
+     * Checks if a checkbox is checked by inspecting its class or attribute.
+     * @param by The locator for the checkbox.
+     * @return true if checked, false otherwise.
+     */
+    public static boolean isCheckboxChecked(By by) {
+        WebElement element = find(by);
+        if (element != null) {
+            String clazz = element.getAttribute("class");
+            // TODO: Update class name as per actual checked state in demoqa
+            return clazz != null && clazz.contains("checked");
+        }
+        return false;
+    }
+
+    /**
+     * Checks if a checkbox is partially checked (indeterminate state).
+     * @param by The locator for the checkbox.
+     * @return true if partially checked, false otherwise.
+     */
+    public static boolean isCheckboxPartiallyChecked(By by) {
+        WebElement element = find(by);
+        if (element != null) {
+            String clazz = element.getAttribute("class");
+            // TODO: Update class name as per actual partial state in demoqa
+            return clazz != null && clazz.contains("indeterminate");
+        }
+        return false;
+    }
+
+    /**
+     * Checks if a folder is expanded by inspecting its icon or attribute.
+     * @param by The locator for the folder expand icon.
+     * @return true if expanded, false otherwise.
+     */
+    public static boolean isFolderExpanded(By by) {
+        WebElement element = find(by);
+        if (element != null) {
+            String clazz = element.getAttribute("class");
+            // TODO: Update class name as per actual expanded state in demoqa
+            return clazz != null && clazz.contains("expanded");
+        }
+        return false;
+    }
+
+    /**
+     * Checks if a folder is collapsed by inspecting its icon or attribute.
+     * @param by The locator for the folder collapse icon.
+     * @return true if collapsed, false otherwise.
+     */
+    public static boolean isFolderCollapsed(By by) {
+        WebElement element = find(by);
+        if (element != null) {
+            String clazz = element.getAttribute("class");
+            // TODO: Update class name as per actual collapsed state in demoqa
+            return clazz != null && clazz.contains("collapsed");
+        }
+        return false;
+    }
+
+    /**
+     * Gets the names of all checked checkboxes under a given locator.
+     * @param by The locator for all checked checkboxes.
+     * @return List of names (text) of checked checkboxes.
+     */
+    public static List<String> getAllCheckedCheckboxNames(By by) {
+        List<String> names = new ArrayList<>();
+        List<WebElement> elements = getDriver().findElements(by);
+        for (WebElement el : elements) {
+            names.add(el.getText());
+        }
+        return names;
+    }
+
+    /**
+     * Gets the names of all partially checked checkboxes under a given locator.
+     * @param by The locator for all partially checked checkboxes.
+     * @return List of names (text) of partially checked checkboxes.
+     */
+    public static List<String> getAllPartiallyCheckedCheckboxNames(By by) {
+        List<String> names = new ArrayList<>();
+        List<WebElement> elements = getDriver().findElements(by);
+        for (WebElement el : elements) {
+            names.add(el.getText());
+        }
+        return names;
     }
 }

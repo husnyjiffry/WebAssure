@@ -13,7 +13,7 @@ public class TextBoxComponentTest extends BaseTest {
 
     @BeforeMethod
     public void setUpActions() {
-        textBoxActions = new TextBoxActions();
+        textBoxActions = new TextBoxActions(getDriver());
         textBoxActions.navigateTo(PAGE_URL);
     }
 

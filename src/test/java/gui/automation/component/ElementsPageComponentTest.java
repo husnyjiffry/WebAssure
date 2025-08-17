@@ -13,9 +13,8 @@ public class ElementsPageComponentTest extends BaseTest {
 
     @BeforeMethod
     public void setUpActions() {
-        // Navigate to Elements page before each test
-        new LandingPageActions().clickElementsCard();
-        elementsPageActions = new ElementsPageActions();
+        elementsPageActions = new ElementsPageActions(getDriver());
+        getDriver().get("https://demoqa.com/elements");
     }
 
     @DataProvider(name = "menuItems")
@@ -61,6 +60,6 @@ public class ElementsPageComponentTest extends BaseTest {
                 menuItem + " should navigate to URL ending with /" + urlSuffix
         );
         // Go back to Elements page for the next test
-        new LandingPageActions().clickElementsCard();
+        // new LandingPageActions(getDriver()).clickElementsCard(); // This line is removed
     }
 }

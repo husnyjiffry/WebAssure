@@ -2,24 +2,27 @@ package gui.automation.pages;
 
 import org.openqa.selenium.By;
 import gui.automation.utils.SeleniumUtil;
+import org.openqa.selenium.WebDriver;
 
 public class ElementsPage extends BasePage {
-    // Parameterized locator for left menu items by visible text
+    /**
+     * Returns a locator for a left menu item by its visible text.
+     * This allows for parameterized, reusable menu item selection.
+     */
     private By menuItemByText(String text) {
         return By.xpath("//li[contains(@class,'btn') and .//span[contains(@class,'text') and contains(text(), '" + text + "')]]");
     }
 
+    // ----------------------
+    // Visibility Check Methods
+    // ----------------------
     public boolean isMenuItemVisible(String text) {
         return SeleniumUtil.waitForVisible(menuItemByText(text)) != null;
     }
 
-    public void hideFixedBanner() {
-        try {
-            ((org.openqa.selenium.JavascriptExecutor) SeleniumUtil.getDriver())
-                    .executeScript("var el = document.getElementById('fixedban'); if (el) el.style.display='none';");
-        } catch (Exception ignored) {
-        }
-    }
+    // ----------------------
+    // Click Methods
+    // ----------------------
 
     /**
      * Beginner Tip:
@@ -41,43 +44,51 @@ public class ElementsPage extends BasePage {
     public void clickMenuItemWithAdHandling(String text) {
         try {
             SeleniumUtil.click(menuItemByText(text));
-        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
+        } catch (Exception e) {
             if (SeleniumUtil.getDriver().getCurrentUrl().contains("#google_vignette")) {
                 SeleniumUtil.closeKnownPopups();
-                SeleniumUtil.waitForUrlDoesNotContain("#google_vignette", 5);
+                SeleniumUtil.waitForUrlDoesNotContain("#google_vignette", 10); // Use default wait time
+                SeleniumUtil.click(menuItemByText(text));
+            } else {
+                throw e;
             }
-            SeleniumUtil.click(menuItemByText(text));
         }
     }
 
     /**
      * Beginner Tip:
-     * This method first scrolls the menu item into view and tries to click it.
-     * If the click fails (e.g., element is not interactable), it then tries to hide the fixed banner and close popups, then retries.
-     * This is the most robust method for handling both scrolling and ad popups.
-     * Use this when menu items may be out of view or covered by overlays.
-     * TEMP: Includes a 2-second wait after scroll for visual confirmation (remove for faster tests).
+     * This method tries to click the menu item, scrolling into view first, then handling ads/popups if needed.
+     * Use this for robust clicking when elements may be covered or require scrolling.
      */
     public void clickMenuItemWithAdAndScrollHandling(String text) {
-        By locator = menuItemByText(text);
-        int attempts = 0;
-        while (attempts < 3) {
-            try {
-                // Always scroll first
-                ((org.openqa.selenium.JavascriptExecutor) SeleniumUtil.getDriver())
-                        .executeScript("arguments[0].scrollIntoView({block: 'center'});", SeleniumUtil.find(locator));
-                SeleniumUtil.waitSeconds(2); // TEMP: Wait for visual confirmation after scroll
-                SeleniumUtil.click(locator);
-                return; // Success
-            } catch (org.openqa.selenium.ElementNotInteractableException e) {
-                // Only try to close popups if scroll+click fails
-                hideFixedBanner();
-                SeleniumUtil.closeKnownPopups();
-                SeleniumUtil.waitSeconds(1);
-            }
-            attempts++;
+        try {
+            SeleniumUtil.scrollTo(menuItemByText(text));
+            SeleniumUtil.waitSeconds(10); // For visual observation
+            SeleniumUtil.click(menuItemByText(text));
+        } catch (org.openqa.selenium.ElementNotInteractableException e) {
+            hideFixedBanner();
+            SeleniumUtil.closeKnownPopups();
+            SeleniumUtil.click(menuItemByText(text));
         }
-        // Final attempt, let the exception propagate if it fails
-        SeleniumUtil.click(locator);
+    }
+
+    // ----------------------
+    // Utility Methods
+    // ----------------------
+
+    /**
+     * Utility method to hide the fixed banner ad that may cover elements on the page.
+     * Uses JavaScript to set the banner's display to 'none' if present.
+     */
+    public void hideFixedBanner() {
+        try {
+            ((org.openqa.selenium.JavascriptExecutor) SeleniumUtil.getDriver())
+                    .executeScript("var el = document.getElementById('fixedban'); if (el) el.style.display='none';");
+        } catch (Exception ignored) {
+        }
+    }
+
+    public ElementsPage(WebDriver driver) {
+        super(driver);
     }
 }

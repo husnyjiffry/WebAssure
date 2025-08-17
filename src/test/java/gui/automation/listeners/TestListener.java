@@ -25,10 +25,21 @@ public class TestListener implements ITestListener {
         skippedTests = 0;
     }
 
-    public static int getTotalTests() { return totalTests; }
-    public static int getSuccessTests() { return successTests; }
-    public static int getFailureTests() { return failureTests; }
-    public static int getSkippedTests() { return skippedTests; }
+    public static int getTotalTests() {
+        return totalTests;
+    }
+
+    public static int getSuccessTests() {
+        return successTests;
+    }
+
+    public static int getFailureTests() {
+        return failureTests;
+    }
+
+    public static int getSkippedTests() {
+        return skippedTests;
+    }
 
     @Override
     public void onTestStart(ITestResult iTestResult) {
@@ -68,14 +79,17 @@ public class TestListener implements ITestListener {
     }
 
     @Override
-    public void onTestFailedButWithinSuccessPercentage(ITestResult iTestResult) {}
+    public void onTestFailedButWithinSuccessPercentage(ITestResult iTestResult) {
+    }
+
     @Override
-    public void onStart(ITestContext iTestContext) {}
+    public void onStart(ITestContext iTestContext) {
+    }
 
     @Override
     public void onFinish(ITestContext iTestContext) {
-        logger.info("Test Execution Summary - Total: {}, Passed: {}, Failed: {}, Skipped: {}", 
-                   getTotalTests(), getSuccessTests(), getFailureTests(), getSkippedTests());
+        logger.info("Test Execution Summary - Total: {}, Passed: {}, Failed: {}, Skipped: {}",
+                getTotalTests(), getSuccessTests(), getFailureTests(), getSkippedTests());
         try {
             if (SeleniumUtil.getDriver() != null) {
                 SeleniumUtil.getDriver().quit();

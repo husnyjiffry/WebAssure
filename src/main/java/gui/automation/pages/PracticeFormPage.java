@@ -1,24 +1,14 @@
 package gui.automation.pages;
 
-import org.openqa.selenium.By;
-import gui.automation.utils.SeleniumUtil;
+// This class is currently a placeholder for future Practice Form page methods.
+// Add visibility checks, input, click, and utility methods here as needed.
 
-/**
- * Page Object for the Practice Form page of demoqa.com.
- */
-public class PracticeFormPage {
-    private final By firstNameInput = By.id("firstName");
-    private final By lastNameInput = By.id("lastName");
-    private final By emailInput = By.id("userEmail");
-    private final By submitButton = By.id("submit");
+import org.openqa.selenium.WebDriver;
 
-    public void fillForm(String firstName, String lastName, String email) {
-        SeleniumUtil.type(firstNameInput, firstName);
-        SeleniumUtil.type(lastNameInput, lastName);
-        SeleniumUtil.type(emailInput, email);
+public class PracticeFormPage extends BasePage {
+    public PracticeFormPage(WebDriver driver) {
+        super(driver);
     }
 
-    public void submitForm() {
-        SeleniumUtil.click(submitButton);
-    }
+    // TODO: Implement Practice Form page methods
 }
