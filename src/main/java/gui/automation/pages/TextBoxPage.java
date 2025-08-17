@@ -190,9 +190,10 @@ public class TextBoxPage extends BasePage {
     }
 
     public boolean isOutputEmpty() {
-        return SeleniumUtil.getText(outputName).isEmpty() &&
-                SeleniumUtil.getText(outputEmail).isEmpty() &&
-                SeleniumUtil.getText(outputCurrentAddress).isEmpty() &&
-                SeleniumUtil.getText(outputPermanentAddress).isEmpty();
+        boolean nameMissingOrEmpty = SeleniumUtil.find(outputName) == null || SeleniumUtil.getText(outputName).isEmpty();
+        boolean emailMissingOrEmpty = SeleniumUtil.find(outputEmail) == null || SeleniumUtil.getText(outputEmail).isEmpty();
+        boolean currentAddressMissingOrEmpty = SeleniumUtil.find(outputCurrentAddress) == null || SeleniumUtil.getText(outputCurrentAddress).isEmpty();
+        boolean permanentAddressMissingOrEmpty = SeleniumUtil.find(outputPermanentAddress) == null || SeleniumUtil.getText(outputPermanentAddress).isEmpty();
+        return nameMissingOrEmpty && emailMissingOrEmpty && currentAddressMissingOrEmpty && permanentAddressMissingOrEmpty;
     }
 }

@@ -1,6 +1,20 @@
 # WebAssure UI Automation Framework
 
-A beginner-friendly, scalable Selenium/TestNG UI automation framework for demoqa.com and similar web apps.
+[![Build Status](https://img.shields.io/badge/build-manual-blue)](https://github.com/husnyjiffry/WebAssure/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Java](https://img.shields.io/badge/Java-11%2B-blue.svg)](https://adoptopenjdk.net/)
+
+## Vision
+
+**Empowering the QA Community and Future Automation Engineers**
+
+My vision for WebAssure is to:
+- Support the global QA community, automation enthusiasts, and fresh graduates aspiring to work in Software Engineer in Test (SET) roles.
+- Make automation accessible, practical, and business-friendly for everyone, regardless of background or experience.
+- Empower others to learn, share, and grow in the field of test automation through open-source collaboration.
+- Foster a culture of continuous learning, knowledge sharing, and support for anyone passionate about quality engineering.
+
+Whether you are a beginner, a student, or a seasoned professional, this framework is for you. Let's build a stronger, more inclusive automation community—together!
 
 ---
 
@@ -10,6 +24,7 @@ A beginner-friendly, scalable Selenium/TestNG UI automation framework for demoqa
 - [Project Structure](#project-structure)
 - [Setup & Installation](#setup--installation)
 - [How to Run Tests](#how-to-run-tests)
+- [Test Styles Supported: TestNG & BDD (Cucumber)](#test-styles-supported-testng--bdd-cucumber)
 - [Adding/Updating ChromeDriver](#addingupdating-chromedriver)
 - [Framework Design](#framework-design)
 - [How to Add New Tests](#how-to-add-new-tests)
@@ -55,7 +70,10 @@ WebAssure/
 │   ├── test/
 │   │   ├── java/gui/automation/component/  # Component/UI tests
 │   │   ├── java/gui/automation/e2e/        # E2E tests (optional)
+│   │   ├── java/gui/automation/stepdefs/   # Cucumber step definitions
+│   │   ├── java/gui/automation/runner/     # Cucumber test runners
 │   ├── resources/
+│   │   ├── features/                      # Cucumber feature files
 │   │   ├── config.properties               # Config file
 │   │   ├── driver/chrome/chromedriver      # ChromeDriver binary
 │   │   └── testng.xml                      # TestNG suite config
@@ -85,6 +103,18 @@ WebAssure/
 
 2. **Configure properties:**
    - Edit `src/main/resources/config.properties` for base URL, browser, etc.
+   - To run tests without opening a visible browser window (headless mode), set `headless=true` in `src/main/resources/config.properties`. This is useful for CI/CD or running on servers.
+
+**Example config.properties:**
+
+| Property         | Description                                      | Example Value                |
+|------------------|--------------------------------------------------|------------------------------|
+| base.url         | The base URL for your tests                      | https://demoqa.com/          |
+| browser          | Browser to use (chrome, firefox, etc.)           | chrome                       |
+| timeout.seconds  | Default wait timeout for elements (in seconds)   | 10                           |
+| use.bundled.driver | Use bundled chromedriver binary (true/false)   | true                         |
+| screenshot.dir   | Directory to save screenshots                    | src/test/resources/screenshots |
+| headless         | Run browser in headless mode (true/false)        | true                         |
 
 ---
 
@@ -100,6 +130,73 @@ WebAssure/
   ```
 - **Parallel execution:**  
   Tests run in parallel by default (see `testng.xml`).
+
+---
+
+## Test Styles Supported: TestNG & BDD (Cucumber)
+
+> **Note for Beginners:**
+> 
+> The test classes and feature files included in this framework are **example tests**. You can use them as templates or references when writing your own tests. They demonstrate best practices for both TestNG and BDD styles.
+
+This framework supports **two ways to write and run tests**:
+
+### 1. TestNG (Classic Java)
+> **Example Tests Provided:**
+> 
+> All test classes in `src/test/java/gui/automation/component/` are provided as examples. Feel free to copy, modify, or use them as a starting point for your own UI tests.
+- **What is it?**
+  - Write tests as Java methods using the TestNG framework (like JUnit, but more powerful for UI automation).
+  - Good for technical users who prefer code-based tests.
+- **Where?**
+  - Test classes: `src/test/java/gui/automation/component/` (e.g., `LandingPageComponentTest.java`)
+- **How to run?**
+  - All TestNG tests:
+    ```sh
+    mvn clean test
+    ```
+  - Specific test class:
+    ```sh
+    mvn clean test -Dtest=gui.automation.component.LandingPageComponentTest
+    ```
+- **Example:**
+  ```java
+  @Test
+  public void testBannerVisible() {
+      Assert.assertTrue(landingPageActions.isBannerVisible(), "Banner should be visible");
+  }
+  ```
+
+### 2. BDD (Cucumber)
+> **Example Feature Files Provided:**
+> 
+> All feature files in `src/test/resources/features/` and their step definitions are provided as examples. You can use these as a reference for writing your own business-readable scenarios.
+- **What is it?**
+  - Write tests in plain English using Gherkin syntax (Given/When/Then).
+  - Good for business users, product owners, or anyone who prefers readable scenarios.
+- **Where?**
+  - Feature files: `src/test/resources/features/` (e.g., `LandingPageComponent.feature`)
+  - Step definitions: `src/test/java/gui/automation/stepdefs/`
+  - Runner: `src/test/java/gui/automation/runner/CucumberTestRunner.java`
+- **How to run?**
+  - All BDD tests:
+    ```sh
+    mvn clean test -Dtest=gui.automation.runner.CucumberTestRunner
+    ```
+- **Example:**
+  ```gherkin
+  Scenario: Banner is visible
+    Given I am on the landing page
+    Then the banner should be visible
+  ```
+
+### When to use which?
+- **TestNG:**
+  - For technical, code-centric tests, or when you want to use advanced Java/TestNG features.
+- **BDD (Cucumber):**
+  - For business-readable, collaborative scenarios, or when you want to share test intent with non-developers.
+
+**You can mix and match both styles in this framework!**
 
 ---
 
@@ -132,6 +229,10 @@ WebAssure/
 
 ## How to Add New Tests
 
+> **Tip:**
+> 
+> The included example tests (both TestNG and BDD) are meant to help you get started. Use them as a guide for structure, naming, and best practices when adding your own tests.
+
 1. **Create/Update a Page Object** for the new page/section.
 2. **Add/Update an Actions class** for user flows.
 3. **Write a test class** in `component/` or `e2e/` using the actions layer.
@@ -145,6 +246,70 @@ WebAssure/
   Encapsulates all direct Selenium/WebDriver calls (click, type, waits, screenshots, etc.).
 - **Benefit:**  
   If you ever switch to a different automation tool, you only need to update this class.
+
+---
+
+## Extending the Framework
+
+- **Add new utility methods:**
+  - Add to `SeleniumUtil.java` for new types of interactions or waits.
+- **Add new Page Objects:**
+  - Create a new class in `src/main/java/gui/automation/pages/` for each new page or component.
+- **Add new Actions classes:**
+  - Create a new class in `src/main/java/gui/automation/actions/` for user flows or business logic.
+- **Support more browsers:**
+  - Extend `DriverUtils.java` to add support for Firefox, Edge, etc. (see the Chrome example).
+- **Add new test types:**
+  - Add new test classes in `component/` or `e2e/` as needed.
+
+---
+
+## What Can You Automate With This Framework?
+
+This framework is designed to automate a wide variety of web UI scenarios, from simple form filling to advanced interactions like drag-and-drop, popups, and dynamic content. You can use it for both business-readable BDD (Cucumber) and technical TestNG tests.
+
+**Supported Automation Types (with SeleniumUtil method groups):**
+
+- **Basic Interactions:**
+  - Click any button, link, or element (`click`, `clickLinkByText`, `selectMenuItemByText`)
+  - Type into input fields (`type`)
+  - Hover, double-click, right-click (`hover`, `doubleClick`, `rightClick`)
+  - Scroll to elements (`scrollTo`)
+- **Dropdowns & Selects:**
+  - Select by visible text or value (`selectByText`, `selectByValue`)
+  - Get selected option or all options (`getSelectedOptionText`, `getAllDropdownOptions`)
+- **Checkboxes, Radio Buttons, Buttons:**
+  - Check/uncheck, verify state (`isCheckboxChecked`, `selectRadioButton`, `isRadioButtonSelected`)
+  - Work with tree/folder structures (`isFolderExpanded`, `isFolderCollapsed`)
+- **Tables & Web Data:**
+  - Read/write table cells, verify values (`getCellText`, `updateCellValue`, `verifyCellValue`)
+  - Count rows/columns (`getTableRowCount`, `getTableColumnCount`)
+- **Links:**
+  - Click and verify links (`clickLinkByText`, `verifyLinkHref`)
+- **File Upload/Download:**
+  - Upload files (`uploadFile`)
+  - Verify downloads (`isFileDownloaded`)
+- **Form Handling:**
+  - Fill, submit, clear forms (`fillForm`, `submitForm`, `clearForm`)
+  - Data-driven from CSV/Excel (`readFirstRowFromCSV`, `readFirstRowFromExcel`)
+- **Alerts, Windows, Frames:**
+  - Handle popups, alerts, and browser windows/tabs (`acceptAlert`, `dismissAlert`, `switchToNewWindow`, `closeCurrentWindowAndSwitchBack`)
+  - Work with iframes (`switchToFrameByIndex`, `switchToFrameByNameOrId`, `switchToDefaultContent`)
+- **UI Widgets:**
+  - Tabs, accordions, sliders, progress bars, tooltips, menus, drag-and-drop, resizable, selectable, sortable (`selectTabByText`, `expandAccordionSection`, `setSliderValue`, `dragAndDrop`, etc.)
+  - Modal dialogs (`isModalDialogVisible`, `closeModalDialog`)
+- **Broken Links/Images:**
+  - Check for broken links and images on any page (`checkBrokenLinks`, `checkBrokenImages`)
+- **Screenshots & Utilities:**
+  - Capture screenshots, generate unique names (`screenshot`, `generateRandomNameWithTimestamp`)
+  - Automatically close popups/ads (`closeKnownPopups`)
+- **Miscellaneous:**
+  - Get/set cookies, maximize window, wait for elements, custom waits, etc.
+  - Run tests in headless mode for faster, UI-less execution (`headless` property in config).
+
+> **Every method in SeleniumUtil is documented for beginners:**
+> - What it does, what parameters it needs, and when to use it (with examples).
+> - See the source code for grouped, easy-to-navigate methods.
 
 ---
 
@@ -162,29 +327,18 @@ WebAssure/
 
 ---
 
-## Troubleshooting
+## Viewing Test Reports
 
-- **ElementClickInterceptedException:**  
-  The framework automatically handles popups and scrolling. If issues persist, check for new overlays or update SeleniumUtil.
-- **ChromeDriver errors:**  
-  Ensure the binary matches your Chrome version and is executable.
-  - **macOS Gatekeeper:** If you see a security warning, follow the steps in [Setup & Installation](#setup--installation) to allow the binary.
-- **Ad popups or overlays:**  
-  The framework includes logic to close popups and scroll elements into view before clicking.
+- **TestNG Reports:**
+  - After running tests, see `target/surefire-reports/` for HTML and text reports.
+- **Cucumber Reports:**
+  - See console output for scenario results. (Add plugins for HTML reports if needed.)
+- **Screenshots on Failure:**
+  - Screenshots are saved to the directory specified in `config.properties` (e.g., `
 
----
+## Changelog
 
-## Contributing
-
-- Fork the repo, create a branch, and submit a pull request.
-- Please add/modify tests and update documentation as needed.
+- 2025-08-17: Initial public release.
+- _Add version notes here as you update the framework._
 
 ---
-
-## License
-
-This project is licensed under the MIT License.
-
-You are free to use this framework for any purpose, including commercial and non-commercial projects, as long as you retain the copyright notice.
-
-See the [LICENSE](LICENSE) file for details.

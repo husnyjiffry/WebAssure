@@ -1,7 +1,6 @@
 package gui.automation.component;
 
 import gui.automation.actions.ElementsPageActions;
-import gui.automation.actions.LandingPageActions;
 import gui.automation.base.BaseTest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
